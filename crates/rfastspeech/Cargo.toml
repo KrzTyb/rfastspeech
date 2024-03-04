@@ -1,0 +1,11 @@
+[package]
+name = "rfastspeech"
+description.workspace = true
+authors.workspace = true
+categories.workspace = true
+edition.workspace = true
+version.workspace = true
+readme.workspace = true
+license.workspace = true
+
+[dependencies]

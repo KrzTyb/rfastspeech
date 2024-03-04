@@ -1,0 +1,17 @@
+[workspace]
+resolver = "2"
+
+members = [
+    "crates/*"
+]
+
+[workspace.package]
+authors = ["Krzysztof Tyburski <krzysztof.tyb@gmail.com>"]
+description = "Fast speech toolkit in Rust"
+categories = ["speech"]
+edition = "2021"
+version = "0.1.0"
+readme = "README.md"
+license = "MIT OR Apache-2.0"
+
+[workspace.dependencies]
