@@ -10,6 +10,6 @@ name = "rfastspeech-convert"
 path = "convert.rs"
 
 [dependencies]
-anyhow.workspace = true
+anyhow = { version = "1.0.80" }
 clap = { version = "4.5.1", features = ["derive"] }
 rfastspeech-import = { path = "../crates/rfastspeech-import" }

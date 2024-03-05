@@ -18,11 +18,6 @@ struct Args {
 fn main() -> Result<()> {
     let args = Args::parse();
 
-    // Validate arguments
-    if !args.model_path.is_dir() {
-        anyhow::bail!("Model path should be a valid directory")
-    }
-
     println!("Importing from path: {}", args.model_path.display());
     import(&args.model_path)?;
 

@@ -1,4 +1,4 @@
-use anyhow::Result;
+use rfastspeech_core::{bail, Error, Result};
 use std::{
     ffi::OsStr,
     path::{Path, PathBuf},
@@ -10,7 +10,7 @@ use safetensors_utils::SafeTensorsHandler;
 
 pub fn import(path: &Path) -> Result<()> {
     let mut safetensors_path = PathBuf::new();
-    let dirs = std::fs::read_dir(path)?;
+    let dirs = std::fs::read_dir(path).map_err(|e| Error::from(e).add_path(path))?;
     for dir in dirs {
         let path = dir?.path();
         let extension = path.extension().and_then(OsStr::to_str);
@@ -22,7 +22,11 @@ pub fn import(path: &Path) -> Result<()> {
         }
     }
 
+    if !safetensors_path.is_file() {
+        bail!("safetensors file not found");
+    }
+
     let _model_params = unsafe { SafeTensorsHandler::load(&safetensors_path) }?;
 
-    anyhow::bail!("Not yet implemented")
+    bail!("Not yet implemented");
 }
