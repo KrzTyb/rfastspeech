@@ -2,3 +2,7 @@ target
 
 # IDE stuff
 .vscode
+
+# Ignore Cargo.lock
+# https://doc.rust-lang.org/cargo/guide/cargo-toml-vs-cargo-lock.html
+Cargo.lock
