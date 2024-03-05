@@ -1,0 +1,15 @@
+[package]
+name = "rfastspeech-models"
+version = "0.1.0"
+publish = false
+edition = "2021"
+
+
+[[bin]]
+name = "rfastspeech-convert"
+path = "convert.rs"
+
+[dependencies]
+anyhow.workspace = true
+clap = { version = "4.5.1", features = ["derive"] }
+rfastspeech-import = { path = "../crates/rfastspeech-import" }
