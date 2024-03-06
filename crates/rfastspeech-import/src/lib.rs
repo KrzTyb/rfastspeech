@@ -1,32 +1,48 @@
-use rfastspeech_core::{bail, Error, Result};
-use std::{
-    ffi::OsStr,
-    path::{Path, PathBuf},
-};
+use rfastspeech_core::{bail, util, Result};
+use std::path::Path;
 
-#[path = "safetensors.rs"]
-mod safetensors_utils;
-use safetensors_utils::SafeTensorsHandler;
+mod huggingface;
 
-pub fn import(path: &Path) -> Result<()> {
-    let mut safetensors_path = PathBuf::new();
-    let dirs = std::fs::read_dir(path).map_err(|e| Error::from(e).add_path(path))?;
-    for dir in dirs {
-        let path = dir?.path();
-        let extension = path.extension().and_then(OsStr::to_str);
-        if let Some(extension) = &extension {
-            if *extension == "safetensors" {
-                safetensors_path = path;
-                break;
-            }
-        }
+/// Imported model
+#[derive(Debug)]
+pub enum Model {
+    /// HuggingFace model with config
+    HuggingFace(huggingface::HFModel),
+}
+
+/// Import model from directory
+/// Chooses available format automatically
+pub fn import(path: &Path) -> Result<Model> {
+    let model_files = util::io::read_dir_entries(path.as_ref())?;
+    log::debug!("Model files: {:?}", model_files);
+
+    // Prefer HuggingFace
+    let result = huggingface::try_import(&model_files);
+    log::trace!("HuggingFace import result: {:?}", result);
+    if let Ok(hf_model) = result {
+        return Ok(Model::HuggingFace(hf_model));
     }
 
-    if !safetensors_path.is_file() {
-        bail!("safetensors file not found");
+    bail!("Supported model not found");
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use test_log::test;
+
+    const HF_DUMMY_DIR: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/src/huggingface/dummy_model");
+
+    #[test]
+    fn import_simple() {
+        // Directory without model
+        let without_model_path = Path::new(env!("CARGO_MANIFEST_DIR"));
+        assert!(import(without_model_path).is_err());
+        // HF dummy
+        let hf_dummy_path = Path::new(HF_DUMMY_DIR);
+        assert!(matches!(
+            import(hf_dummy_path).unwrap(),
+            Model::HuggingFace(_)
+        ));
     }
-
-    let _model_params = unsafe { SafeTensorsHandler::load(&safetensors_path) }?;
-
-    bail!("Not yet implemented");
 }

@@ -1,0 +1,6 @@
+{
+  "architectures": [
+    "DummyModel"
+  ],
+  "model_type": "dummy"
+}
