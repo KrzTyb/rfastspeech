@@ -42,10 +42,11 @@ jobs:
       run: cargo build --verbose
 
     - name: Run tests
-      run: cargo llvm-cov nextest --lcov --output-path tests.lcov
+      run: cargo llvm-cov nextest --all-features --workspace --lcov --output-path tests.lcov
 
     - name: Upload Codecov
       uses: codecov/codecov-action@v4
       with:
         files: tests.lcov
         token: ${{ secrets.CODECOV_TOKEN }}
+        fail_ci_if_error: true
