@@ -1,0 +1,4 @@
+ignore:
+  - "models"
+github_checks:
+    annotations: false
