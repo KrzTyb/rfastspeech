@@ -9,14 +9,49 @@ on:
 env:
   CARGO_TERM_COLOR: always
 
-jobs:
-  build:
+  # Grcov version
+  GRCOV_VERSION: "0.8.19"
+  GRCOV_LINK: https://github.com/mozilla/grcov/releases/download
 
-    runs-on: ubuntu-latest
+  RUST_VERSION: "1.76"
+
+jobs:
+  check:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04]
+        rust: [1.76.0]
+        include:
+          - os: ubuntu-22.04
+            rust: 1.76.0
+    
+    name: RFashSpeech checks ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Fetch repo
+      uses: actions/checkout@v4
+
+    - name: Install Rust
+      uses: dtolnay/rust-toolchain@master
+      with:
+        components: rustfmt, clippy llvm-tools-preview
+        toolchain: ${{ matrix.rust }}
+
+    - name: Install cargo-nextest and cargo-llvm-cov
+      uses: taiki-e/install-action@v2
+      with:
+        tool: cargo-nextest,cargo-llvm-cov
+
     - name: Build
       run: cargo build --verbose
+
     - name: Run tests
-      run: cargo test --verbose
+      run: cargo llvm-cov --lcov --output-path tests.lcov
+
+    - name: Upload Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        files: tests.lcov
+        token: ${{ secrets.CODECOV_TOKEN }}
