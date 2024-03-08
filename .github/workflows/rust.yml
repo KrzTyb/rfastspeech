@@ -10,7 +10,34 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  check:
+  fmt:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04]
+        rust: [1.76.0]
+        include:
+          - os: ubuntu-22.04
+            rust: 1.76.0
+
+    name: "Formatting"
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Fetch repo
+      uses: actions/checkout@v4
+
+    - name: Install Rust
+      uses: dtolnay/rust-toolchain@master
+      with:
+        components: rustfmt
+        toolchain: ${{ matrix.rust }}
+
+    - name: rustfmt
+      run: |
+        cargo fmt -- --check
+
+  checks:
     strategy:
       fail-fast: false
       matrix:
@@ -20,7 +47,7 @@ jobs:
           - os: ubuntu-22.04
             rust: 1.76.0
     
-    name: RFashSpeech checks ${{ matrix.name }}
+    name: Checks
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -37,6 +64,14 @@ jobs:
       uses: taiki-e/install-action@v2
       with:
         tool: cargo-nextest,cargo-llvm-cov
+
+    - name: Clippy
+      uses: giraffate/clippy-action@v1
+      with:
+        reporter: 'github-pr-review'
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        clippy_flags: --all-targets -- -Dwarnings
+        filter_mode: nofilter
 
     - name: Build
       run: cargo build --verbose
