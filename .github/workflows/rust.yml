@@ -9,12 +9,6 @@ on:
 env:
   CARGO_TERM_COLOR: always
 
-  # Grcov version
-  GRCOV_VERSION: "0.8.19"
-  GRCOV_LINK: https://github.com/mozilla/grcov/releases/download
-
-  RUST_VERSION: "1.76"
-
 jobs:
   check:
     strategy:
