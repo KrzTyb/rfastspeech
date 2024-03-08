@@ -42,7 +42,7 @@ jobs:
       run: cargo build --verbose
 
     - name: Run tests
-      run: cargo llvm-cov --lcov --output-path tests.lcov
+      run: cargo llvm-cov nextest --lcov --output-path tests.lcov
 
     - name: Upload Codecov
       uses: codecov/codecov-action@v4
