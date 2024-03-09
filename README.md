@@ -6,4 +6,12 @@
 
 **RFastSpeech is a speech toolkit written in Rust.**
 
-</div>
+<div align="left">
+
+***Supported models***
+
+ASR
+- [ ] [Whisper](https://github.com/openai/whisper)
+
+TTS
+- [ ] [VITS](https://arxiv.org/pdf/2106.06103.pdf)
