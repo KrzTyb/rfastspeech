@@ -9,7 +9,12 @@ readme.workspace = true
 license.workspace = true
 
 [dependencies]
+log.workspace = true
 safetensors.workspace = true
 memmap2.workspace = true
 yoke.workspace = true
+serde_json.workspace = true
 rfastspeech-core = { path = "../rfastspeech-core" }
+
+[dev-dependencies]
+test-log.workspace = true

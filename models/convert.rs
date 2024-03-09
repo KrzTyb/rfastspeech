@@ -19,7 +19,7 @@ fn main() -> Result<()> {
     let args = Args::parse();
 
     println!("Importing from path: {}", args.model_path.display());
-    import(&args.model_path)?;
+    let _model = import(&args.model_path)?;
 
     Ok(())
 }

@@ -5,6 +5,10 @@ pub enum Error {
     #[error(transparent)]
     Io(#[from] std::io::Error),
 
+    /// serde_json::Error
+    #[error(transparent)]
+    Json(#[from] serde_json::Error),
+
     /// With path
     #[error("{inner}; path: {path:?}")]
     WithPath {

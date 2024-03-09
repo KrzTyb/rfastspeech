@@ -14,7 +14,11 @@ license = "MIT OR Apache-2.0"
 
 [workspace.dependencies]
 thiserror = { version = "1.0.57" }
+log = { version = "0.4.21" }
+test-log = { version = "0.2.15" }
+simple_logger = { version = "4.3.3" }
 burn = { version = "0.12.1" }
 safetensors = { version = "0.4.2" }
 memmap2 = { version = "0.9.4", features = ["stable_deref_trait"] }
 yoke = { version = "0.7.3", features = ["derive"] }
+serde_json = { version = "1.0.114" }

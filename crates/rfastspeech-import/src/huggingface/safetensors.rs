@@ -7,11 +7,13 @@ fn convert_err(err: SafeTensorError) -> Error {
     Error::Message(format!("Safetensors -> {}", err))
 }
 
-#[derive(yoke::Yokeable)]
+#[derive(yoke::Yokeable, Debug)]
 struct _SafeTensors<'a>(SafeTensors<'a>);
 
+/// Access to safetensors content
+#[derive(Debug)]
 pub struct SafeTensorsHandler {
-    _tensors: yoke::Yoke<_SafeTensors<'static>, Mmap>,
+    tensors: yoke::Yoke<_SafeTensors<'static>, Mmap>,
 }
 
 impl SafeTensorsHandler {
@@ -35,7 +37,15 @@ impl SafeTensorsHandler {
         )?;
 
         Ok(Self {
-            _tensors: safetensors,
+            tensors: safetensors,
         })
+    }
+
+    pub fn contains(&self, tensor_name: &str) -> bool {
+        self.tensors
+            .get()
+            .0
+            .names()
+            .contains(&&tensor_name.to_string())
     }
 }
