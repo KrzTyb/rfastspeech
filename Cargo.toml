@@ -14,6 +14,7 @@ license = "MIT OR Apache-2.0"
 
 [workspace.dependencies]
 thiserror = { version = "1.0.57" }
+enum-as-inner = { version = "0.6.0" }
 log = { version = "0.4.21" }
 test-log = { version = "0.2.15" }
 simple_logger = { version = "4.3.3" }

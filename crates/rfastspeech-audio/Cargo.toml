@@ -1,0 +1,14 @@
+[package]
+name = "rfastspeech-audio"
+description = "RFastSpeech audio helper"
+authors.workspace = true
+categories.workspace = true
+edition.workspace = true
+version.workspace = true
+readme.workspace = true
+license.workspace = true
+
+[dependencies]
+hound = "3.5.1"
+enum-as-inner.workspace = true
+thiserror.workspace = true
